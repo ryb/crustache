@@ -138,7 +138,12 @@ bufgrow(struct buf *buf, size_t neosz)
 	while (neoasz < neosz)
 		neoasz += buf->unit;
 
-	neodata = realloc(buf->data, neoasz);
+    if(!buf->data) {
+        neodata = calloc(neoasz, sizeof(char *));
+    } else {
+        neodata = realloc(buf->data, neoasz);
+    }
+
 	if (!neodata)
 		return BUF_ENOMEM;
 
